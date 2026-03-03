@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "kibtech:block/battery_charger"
+        }
+    }
+}

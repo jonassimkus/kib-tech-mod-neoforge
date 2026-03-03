@@ -1,0 +1,12 @@
+{
+  "itemGroup.kibtech.kibtech": "Kib Tech",
+  "block.kibtech.solar_panel": "Solar Panel",
+  "block.kibtech.battery_charger": "Battery Charger",
+
+  "item.kibtech.weak_battery": "Weak Battery",
+
+  "kibtech.configuration.title": "Kib Tech Configs",
+  "kibtech.configuration.section.kibtech.common.toml": "Kib Tech Configs",
+  "kibtech.configuration.section.kibtech.common.toml.title": "Kib Tech Configs"
+
+}
