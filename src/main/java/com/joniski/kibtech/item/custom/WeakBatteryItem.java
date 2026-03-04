@@ -23,7 +23,7 @@ import net.minecraft.world.level.block.Block;
 
 public class WeakBatteryItem extends Item {
 
-    private int maxPower = 1000;
+    private int maxPower = 600;
 
     public WeakBatteryItem(Properties properties) {
         super(properties);
@@ -38,9 +38,9 @@ public class WeakBatteryItem extends Item {
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
 
         if (power == null){
-            tooltipComponents.add(Component.translatable("§90" + "§7/§9" + maxPower + " §dFE"));
+            tooltipComponents.add(Component.translatable("§90" + "§7/§9" + maxPower + " §dKE"));
         }else{
-            tooltipComponents.add(Component.translatable("§9" + power.power() + "§7/§9" + maxPower + " §dFE"));
+            tooltipComponents.add(Component.translatable("§9" + power.power() + "§7/§9" + maxPower + " §dKE"));
         }
     }
 
@@ -62,7 +62,6 @@ public class WeakBatteryItem extends Item {
             powerCurrent = power.power();
         }
 
-
         powerCurrent += amount;
         int excess = 0;
         if (powerCurrent >= maxPower){
@@ -72,7 +71,7 @@ public class WeakBatteryItem extends Item {
 
         stack.set(ModDataComponents.POWER_COMPONENT, new PowerRecord(powerCurrent));
 
-        return excess;
+        return amount - excess;
     }
 
 

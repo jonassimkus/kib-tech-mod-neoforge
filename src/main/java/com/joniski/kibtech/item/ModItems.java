@@ -13,7 +13,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(KibTech.MODID);
 
-        public static final DeferredItem<Item> WEAK_BATTERY = ITEMS.register("weak_battery", () -> new WeakBatteryItem(new Item.Properties()));
+        public static final DeferredItem<Item> WEAK_BATTERY = ITEMS.register("weak_battery", () -> new WeakBatteryItem(new Item.Properties().stacksTo(1)));
 
         public static void register(IEventBus modEventBus){
             ITEMS.register(modEventBus);

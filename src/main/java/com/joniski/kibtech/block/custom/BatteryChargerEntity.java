@@ -1,25 +1,42 @@
 package com.joniski.kibtech.block.custom;
 
+import javax.annotation.Nullable;
+
 import com.joniski.kibtech.KibTech;
 import com.joniski.kibtech.block.ModBlockEntity;
 import com.joniski.kibtech.block.ModBlocks;
 import com.joniski.kibtech.item.custom.WeakBatteryItem;
+import com.joniski.kibtech.menus.custom.BatteryChargerMenu;
+import com.joniski.kibtech.menus.custom.SolarPanelMenu;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.MenuProvider;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.capabilities.Capabilities;
+import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.energy.EnergyStorage;
 import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
-public class BatteryChargerEntity extends BlockEntity implements IEnergyStorage {
+@EventBusSubscriber(modid =  KibTech.MODID)
+public class BatteryChargerEntity extends BlockEntity implements MenuProvider{
 
+    // Battery Slot
     public final ItemStackHandler inventory = new ItemStackHandler(1){
         @Override
         protected int getStackLimit(int slot, ItemStack stack) {
@@ -36,102 +53,85 @@ public class BatteryChargerEntity extends BlockEntity implements IEnergyStorage 
         };
     };
 
-    private int power = 0;
-    private int maxPower = 1000;
+
+    private EnergyStorage energyStorage;
 
     public BatteryChargerEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntity.BATTERY_CHARGER_BE.get(), pos, blockState);
+        energyStorage = new EnergyStorage(1000);
     }
 
 
     @Override
     protected void saveAdditional(CompoundTag tag, Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.put("inventory", inventory.serializeNBT(registries));
-        tag.putInt("battery_charger.power", power);
+        tag.put("battery_charger.inventory", inventory.serializeNBT(registries));
+        tag.put("battery_charger.storage", energyStorage.serializeNBT(registries));
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, Provider registries) {
         super.loadAdditional(tag, registries);
-        inventory.deserializeNBT(registries, tag.getCompound("inventory"));
-        power = tag.getInt("battery_charger.power");
+        inventory.deserializeNBT(registries, tag.getCompound("battery_charger.inventory"));
+
+        if (tag.get("battery_charger.storage") != null){
+            energyStorage.deserializeNBT(registries, tag.get("battery_charger.storage"));
+        }
     }
 
+    @Override
+    public AbstractContainerMenu createMenu(int arg0, Inventory arg1, Player arg2) {
+        return new BatteryChargerMenu(arg0, arg1, this);
+    }
+
+    @Override
+    public Component getDisplayName() {
+        return Component.translatable("block.kibtech.battery_charger");
+    }
+
+
+    public static IEnergyStorage getCapabilities(BatteryChargerEntity batteryChargerEntity, Direction direction){
+        return batteryChargerEntity.energyStorage;
+    }
 
     public void tick(Level level, BlockPos pos, BlockState state){
-        KibTech.LOGGER.debug("" + power);
-
-        if (inventory.getStackInSlot(0).isEmpty()){
-            return;
+        if (!inventory.getStackInSlot(0).isEmpty()){
+            if ((inventory.getStackInSlot(0).getItem() instanceof WeakBatteryItem)){
+                WeakBatteryItem b = (WeakBatteryItem) inventory.getStackInSlot(0).getItem();
+             
+                if (!b.isFull(inventory.getStackInSlot(0))){
+                    int energyStolen = energyStorage.extractEnergy(3, true);
+                    int energySent = b.charge(inventory.getStackInSlot(0), energyStolen);
+                    energyStorage.extractEnergy(energySent, false);
+                
+                }
+            }
         }
-        WeakBatteryItem b = (WeakBatteryItem) inventory.getStackInSlot(0).getItem();
-
-        if (b.isFull(inventory.getStackInSlot(0))){
-            return;
-        }
-
-        if(power >= 20){
-            int excess = b.charge(inventory.getStackInSlot(0), 20);
-            power -= 20;
-            power += excess;
-        }
-        else if (power >= 0){
-            int excess = b.charge(inventory.getStackInSlot(0), power);
-            power -= power;
-            power += excess;
-        }
-
+        // IMPORTANT FOR THE GUI UPDATES AND CLIENT UPDATES
+        setChanged();
+        level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
     }
 
 
-    @Override
-    public boolean canExtract() {
-        return false;
+    @SubscribeEvent
+    public static void onCapabilitiesRegister(final RegisterCapabilitiesEvent event){
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntity.BATTERY_CHARGER_BE.get(), BatteryChargerEntity::getCapabilities);
     }
 
 
+    public EnergyStorage getEnergyStorage(){
+        return energyStorage;
+    }
+
+    @Nullable
     @Override
-    public boolean canReceive() {
-        return true;
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     @Override
-    public int extractEnergy(int arg0, boolean arg1) {
-        if (power >= arg0){
-            power -= arg0;
-            return arg0;
-        }
-
-        power = 0;
-        return power;
-    }
-
-
-    @Override
-    public int getEnergyStored() {
-        return power;
-    }
-
-
-    @Override
-    public int getMaxEnergyStored() {
-        return maxPower;
-    }
-
-
-    @Override
-    public int receiveEnergy(int arg0, boolean arg1) {
-        power += arg0;
-            
-        int excess = 0;
-        if (power > maxPower){
-            excess = power - maxPower;
-            power = maxPower;
-        }
-
-        return excess;
-
+    public CompoundTag getUpdateTag(Provider registries) {
+        return saveWithoutMetadata(registries);
     }
 
 }

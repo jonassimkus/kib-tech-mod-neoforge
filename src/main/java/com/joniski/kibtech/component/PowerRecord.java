@@ -23,7 +23,5 @@ public record PowerRecord(int power) {
     // Unit stream codec if nothing should be sent across the network
     public static final StreamCodec<ByteBuf, PowerRecord> UNIT_STREAM_CODEC = StreamCodec.unit(new PowerRecord(0));
 
-
-
 }
 

@@ -1,6 +1,22 @@
 {
-    "parent": "minecraft:block/cube_all",
+    "parent": "minecraft:block/cube",
+
+    "elements": [
+        {
+            "from": [0,0,0],
+            "to": [16,4,16],
+            "faces": {
+                "north": {"texture": "#text"},
+                "south": {"texture": "#text"},
+                "east": {"texture": "#text"},
+                "west": {"texture": "#text"},
+                "up": {"texture": "#text"},
+                "down": {"texture": "#text"}
+            }
+        }
+
+    ],
     "textures": {
-        "all": "kibtech:block/solar_panel"
+        "text": "kibtech:block/solar_panel"
     }
 }

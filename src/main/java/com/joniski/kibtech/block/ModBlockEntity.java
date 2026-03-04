@@ -19,13 +19,12 @@ public class ModBlockEntity {
             BatteryChargerEntity::new,
             ModBlocks.BATTERY_CHARGER.get()).build(null));
 
-    
+
     public static final Supplier<BlockEntityType<SolarPanelEntity>> SOLAR_PANEL_BE =
          BLOCK_ENTITIES.register("solar_panel_be", () -> BlockEntityType.Builder.of(
             SolarPanelEntity::new,
             ModBlocks.SOLAR_PANEL.get()).build(null));
-
-
+    
     public static void register(IEventBus eventBus){
         BLOCK_ENTITIES.register(eventBus);
     }

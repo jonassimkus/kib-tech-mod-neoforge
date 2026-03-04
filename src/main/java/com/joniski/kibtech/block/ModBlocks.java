@@ -4,17 +4,13 @@ import java.util.function.Supplier;
 
 import com.joniski.kibtech.KibTech;
 import com.joniski.kibtech.block.custom.BatteryCharger;
-import com.joniski.kibtech.block.custom.BatteryChargerEntity;
 import com.joniski.kibtech.block.custom.SolarPanel;
 import com.joniski.kibtech.item.ModItems;
 
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
@@ -35,6 +31,7 @@ public class ModBlocks {
         .strength(2f)
         .requiresCorrectToolForDrops()
         .sound(SoundType.AMETHYST)
+        .noOcclusion()
     ));
 
 
@@ -43,8 +40,6 @@ public class ModBlocks {
         ModItems.ITEMS.register(name, () -> new BlockItem(toReturn.get(), new Item.Properties()));
         return toReturn;
     }
-
-
 
     public static void register(IEventBus modEventBus){
         BLOCKS.register(modEventBus);

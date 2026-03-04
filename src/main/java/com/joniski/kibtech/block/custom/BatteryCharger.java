@@ -1,28 +1,18 @@
 package com.joniski.kibtech.block.custom;
 
-import javax.annotation.Nullable;
-
-import org.jetbrains.annotations.Debug;
-
-import com.joniski.kibtech.KibTech;
 import com.joniski.kibtech.block.ModBlockEntity;
-import com.joniski.kibtech.item.custom.WeakBatteryItem;
 import com.mojang.serialization.MapCodec;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.RandomSource;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.CampfireBlock;
-import net.minecraft.world.level.block.FurnaceBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
@@ -55,32 +45,25 @@ public class BatteryCharger extends BaseEntityBlock{
         return CODEC;
     }
 
+    @Override
+    protected void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        // TODO ADD BREAKING
+        return;
+    }
     
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos,
             Player player, InteractionHand hand, BlockHitResult hitResult) {
 
-        if(level.getBlockEntity(pos) instanceof BatteryChargerEntity batteryChargerEntity){
-            if (stack.getItem() instanceof WeakBatteryItem){
-                if(batteryChargerEntity.inventory.getStackInSlot(0).isEmpty()){
-                    batteryChargerEntity.inventory.setStackInSlot(0, stack.copy());
-                    stack.shrink(1);        
-            
-                    
-                    return ItemInteractionResult.SUCCESS;
-                }
-            }else if (stack.isEmpty()){
-                if(!batteryChargerEntity.inventory.getStackInSlot(0).isEmpty()){
-                    player.setItemInHand(hand, batteryChargerEntity.inventory.getStackInSlot(0).copy());
-                    batteryChargerEntity.inventory.setStackInSlot(0, ItemStack.EMPTY);
-            
-                    return ItemInteractionResult.SUCCESS;
-                }
+        if (!level.isClientSide){
+            if (level.getBlockEntity(pos) instanceof BatteryChargerEntity batteryChargerEntity){
+                ((ServerPlayer) player).openMenu(new SimpleMenuProvider(batteryChargerEntity, Component.literal("Battery Charger")), pos);
+                return ItemInteractionResult.SUCCESS;
             }
-
         }
 
-        return ItemInteractionResult.FAIL;
+
+        return ItemInteractionResult.SUCCESS;
     }
 
 
