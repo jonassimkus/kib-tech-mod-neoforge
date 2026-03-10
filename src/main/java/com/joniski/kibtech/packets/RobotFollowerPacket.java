@@ -1,4 +1,4 @@
-package com.joniski.kibtech.component;
+package com.joniski.kibtech.packets;
 
 
 import java.util.UUID;
@@ -13,20 +13,20 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record RobotFollowerRecord(int robotId, String playerUUID) implements CustomPacketPayload {
+public record RobotFollowerPacket(int robotId, String playerUUID) implements CustomPacketPayload {
     
-    public static final CustomPacketPayload.Type<RobotFollowerRecord> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(KibTech.MODID, "robot_follower_record"));
+    public static final CustomPacketPayload.Type<RobotFollowerPacket> TYPE = new CustomPacketPayload.Type<>(ResourceLocation.fromNamespaceAndPath(KibTech.MODID, "robot_follower_record"));
 
     // Each pair of elements defines the stream codec of the element to encode/decode and the getter for the element to encode
     // 'name' will be encoded and decoded as a string
     // 'age' will be encoded and decoded as an integer
     // The final parameter takes in the previous parameters in the order they are provided to construct the payload object
-    public static final StreamCodec<ByteBuf, RobotFollowerRecord> STREAM_CODEC = StreamCodec.composite(
+    public static final StreamCodec<ByteBuf, RobotFollowerPacket> STREAM_CODEC = StreamCodec.composite(
         ByteBufCodecs.VAR_INT,
-        RobotFollowerRecord::robotId,
+        RobotFollowerPacket::robotId,
         ByteBufCodecs.STRING_UTF8,
-        RobotFollowerRecord::playerUUID,
-        RobotFollowerRecord::new
+        RobotFollowerPacket::playerUUID,
+        RobotFollowerPacket::new
     );
     
     @Override

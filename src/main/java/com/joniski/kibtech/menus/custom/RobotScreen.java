@@ -7,7 +7,7 @@ import org.checkerframework.checker.units.qual.min;
 
 import com.joniski.kibtech.KibTech;
 import com.joniski.kibtech.block.custom.SolarPanelEntity;
-import com.joniski.kibtech.component.RobotFollowerRecord;
+import com.joniski.kibtech.packets.RobotFollowerPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.GuiGraphics;
@@ -63,7 +63,7 @@ public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
         if (offsetX >= 150 && offsetX <= 172){
             if (offsetY >= 62 && offsetY <= 77){
                 // Packet that makes sure server knows entity is following you now, or if its not.
-               PacketDistributor.sendToServer(new RobotFollowerRecord(menu.entity.getId(), player.getStringUUID()));
+               PacketDistributor.sendToServer(new RobotFollowerPacket(menu.entity.getId(), player.getStringUUID()));
             }
         }
 

@@ -8,6 +8,7 @@ import com.joniski.kibtech.block.ModBlockEntity;
 import com.joniski.kibtech.block.ModBlocks;
 import com.joniski.kibtech.component.ModDataComponents;
 import com.joniski.kibtech.entity.ModEntities;
+import com.joniski.kibtech.entity.custom.RobotEntity;
 import com.joniski.kibtech.item.ModItems;
 import com.joniski.kibtech.menus.ModMenus;
 import com.mojang.logging.LogUtils;
@@ -24,6 +25,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -70,9 +72,11 @@ public class KibTech {
 
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
     }
+    
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
     }
 
+  
 }

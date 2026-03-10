@@ -1,6 +1,5 @@
 package com.joniski.kibtech;
 
-import com.joniski.kibtech.component.RobotFollowerRecord;
 import com.joniski.kibtech.entity.ModEntities;
 import com.joniski.kibtech.entity.client.StoneRobotModel;
 import com.joniski.kibtech.entity.client.StoneRobotRenderer;
@@ -11,6 +10,7 @@ import com.joniski.kibtech.menus.ModMenus;
 import com.joniski.kibtech.menus.custom.BatteryChargerScreen;
 import com.joniski.kibtech.menus.custom.RobotScreen;
 import com.joniski.kibtech.menus.custom.SolarPanelScreen;
+import com.joniski.kibtech.packets.RobotFollowerPacket;
 
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.server.level.ServerLevel;
@@ -54,54 +54,11 @@ public class KibTechClient {
     }
 
     @SubscribeEvent
-    public static void registerPayloads(RegisterPayloadHandlersEvent event) {
-        PayloadRegistrar registrar = event.registrar("1");
-
-        // Packet to let robot follow player from GUI button
-        registrar.playToServer(
-            RobotFollowerRecord.TYPE, RobotFollowerRecord.STREAM_CODEC,
-            (payload, context) -> {
-                context.enqueueWork(() -> {
-                    Player player = context.player();
-                    if (player == null) {
-                        return;
-                    }
-
-                    if (!(player.level() instanceof ServerLevel serverLevel)) return;
-
-                    Entity entity = serverLevel.getEntity(payload.robotId());
-                    if (!(entity instanceof RobotEntity)){
-                        return;
-                    }
-
-                    RobotEntity robot = (RobotEntity)entity;
-
-                    if (player.distanceToSqr(robot) > 64.0D) {
-                        return;
-                    }
-
-                    Entity follower = robot.getFollowEntity();
-                    if (follower != null && player.getUUID() == follower.getUUID()){
-                        robot.setFollowEntity(null);
-                    }else{
-                        robot.setFollowEntity(player);
-                    }
-                });
-            }
-        );
-    }
-
-
-    @SubscribeEvent
     public static void registerLayers(EntityRenderersEvent.RegisterLayerDefinitions event){
         event.registerLayerDefinition(WoodRobotModel.LAYER_LOCATION, WoodRobotModel::createBodyLayer);
         event.registerLayerDefinition(StoneRobotModel.LAYER_LOCATION, StoneRobotModel::createBodyLayer);
     }
 
-    @SubscribeEvent
-    public static void registerAttributes(EntityAttributeCreationEvent event){
-        event.put(ModEntities.WOOD_ROBOT.get(), RobotEntity.createAttributes().build());
-        event.put(ModEntities.STONE_ROBOT.get(), RobotEntity.createAttributes().build());
-    }
+  
 }
 
