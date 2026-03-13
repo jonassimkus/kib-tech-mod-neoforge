@@ -18,6 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.ClickType;
+import net.minecraft.world.inventory.Slot;
+import net.neoforged.neoforge.client.event.ContainerScreenEvent.Render;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
@@ -39,7 +42,7 @@ public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
         RenderSystem.setShaderTexture(0, GUI_TEXTURE);
 
         int x = (width - imageWidth) / 2;
-        int y  = (height - imageHeight) / 2;
+        int y = (height - imageHeight) / 2;
 
         guiGraphics.blit(GUI_TEXTURE, x, y, 0, 0, imageWidth, imageHeight);
     }
@@ -47,10 +50,8 @@ public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
           guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY, 4210752, false);
-    
     }
 
-    
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button){
 
@@ -73,7 +74,15 @@ public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
     @Override
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         super.render(guiGraphics, mouseX, mouseY, partialTick);
+
+  
+
         renderTooltip(guiGraphics, mouseX, mouseY);
+    }
+
+    @Override
+    protected void slotClicked(Slot slot, int slotId, int mouseButton, ClickType type) {
+        super.slotClicked(slot, slotId, mouseButton, type);
     }
 
     @Override

@@ -9,6 +9,8 @@
   "item.kibtech.stone_robot_item": "Stone Robot",
   "item.kibtech.iron_robot_item": "Iron Robot",
   "item.kibtech.diamond_robot_item": "Diamond Robot",
+  "item.kibtech.chip_item": "Microchip",
+  "item.kibtech.robot_wand_item": "Robot Wand",
 
   "kibtech.configuration.title": "Kib Tech Configs",
   "kibtech.configuration.section.kibtech.common.toml": "Kib Tech Configs",

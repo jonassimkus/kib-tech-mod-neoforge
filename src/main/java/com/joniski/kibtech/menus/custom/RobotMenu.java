@@ -41,6 +41,10 @@ public class RobotMenu extends AbstractContainerMenu{
     
         this.addSlot(new SlotItemHandler(entity.inventory, 0, 8, 63));
         this.addSlot(new SlotItemHandler(entity.inventory, 1, 8, 42));
+
+        for (int i = 2; i < entity.inventory.getSlots(); ++i){
+            this.addSlot(new SlotItemHandler(entity.inventory, i, 28+ 20 * (i - 2), 42));
+        }
     }
 
     @Override

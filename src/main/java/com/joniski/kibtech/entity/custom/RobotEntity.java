@@ -14,6 +14,7 @@ import com.joniski.kibtech.component.PowerRecord;
 import com.joniski.kibtech.enums.RobotWorkType;
 import com.joniski.kibtech.item.ModItems;
 import com.joniski.kibtech.item.custom.BatteryItem;
+import com.joniski.kibtech.item.custom.RobotWandItem;
 import com.joniski.kibtech.item.custom.BatteryItem;
 import com.joniski.kibtech.menus.custom.RobotMenu;
 import com.joniski.kibtech.uitl.TreeUtil;
@@ -58,6 +59,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.HoeItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.PickaxeItem;
@@ -72,6 +74,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.pathfinder.Path;
 import net.minecraft.world.level.pathfinder.PathFinder;
+import net.minecraft.world.level.pathfinder.PathType;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
@@ -90,17 +95,23 @@ public class RobotEntity extends Animal{
     protected float moveSpeed = 0.75f;
     // use UUID instead of storing entity, easier for packet and saving nbt data 
     private UUID followEntityUUID;
-    private BlockPos searchStart = null;
-    private BlockPos searchEnd;
+    public BlockPos searchStart = null;
+    public BlockPos searchEnd;
     private List<BlockPos> targetTree;
+    public Item dropItem = ModItems.WOOD_ROBOT_ITEM.asItem();
+    public int maxArea = 5;
     private boolean moving = false;
     private RobotWorkType workType = RobotWorkType.NONE;
 
    // Slot 1: Battery; Slot 2: Tool
-    public final ItemStackHandler inventory = new ItemStackHandler(2){
+    public final ItemStackHandler inventory = new ItemStackHandler(4){
         @Override
         protected int getStackLimit(int slot, ItemStack stack) {
-            return 1;
+            if (slot <= 1){
+                return 1;
+            }else{
+                return stack.getMaxStackSize();
+            }
         };
 
 
@@ -134,6 +145,10 @@ public class RobotEntity extends Animal{
                 }
             }
 
+
+            if (slot > 1){
+                return true;
+            }
 
             return false;
         };
@@ -241,9 +256,12 @@ public class RobotEntity extends Animal{
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         if (!player.level().isClientSide()){
             if (player instanceof ServerPlayer serverPlayer) {
+                if (player.getItemInHand(hand).getItem() instanceof RobotWandItem  wand){
+                    wand.setRobotTarget(this);
+                    return InteractionResult.SUCCESS;
+                }
+
                 serverPlayer.openMenu(new SimpleMenuProvider((windId, inv, p) -> new RobotMenu(windId, inv, getId()) , Component.literal("Robot Settings")), buf -> buf.writeInt(getId()));
-                searchStart = blockPosition().offset(-5, -5, -5);
-                searchEnd = blockPosition().offset(5, 5, 5);
             }
 
         }
@@ -295,6 +313,11 @@ public class RobotEntity extends Animal{
         }
 
         followEntityUUID = e.getUUID();
+    }
+
+    public void stopMoving(){
+        moving = false;
+        getNavigation().stop();
     }
 
     public Entity getFollowEntity(){
@@ -379,11 +402,32 @@ public class RobotEntity extends Animal{
         if (getNavigation().isDone()){
             BlockPos targetPos = getNavigation().getTargetPos();
             BlockState oldBlockState = level().getBlockState(targetPos);
-            level().destroyBlock(targetPos, false);
 
             if (!(oldBlockState.getBlock() instanceof CropBlock block)){
                 return;
             }
+
+            LootParams.Builder lootparams = new LootParams.Builder((ServerLevel)level()).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(targetPos)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
+            List<ItemStack> drops = oldBlockState.getDrops(lootparams);
+
+            for(int y = 0; y < drops.size(); ++y){
+                if (block.getCloneItemStack(level(), targetPos, oldBlockState).getItem() == drops.get(y).getItem()){
+                    drops.get(y).setCount(drops.get(y).getCount()-1);
+                }
+
+                for(int i = 1; i < inventory.getSlots(); ++ i){
+                    drops.set(y, inventory.insertItem(i, drops.get(y), false));
+                }
+            }
+
+            SimpleContainer dropContainer = new SimpleContainer(drops.size());
+            for (int i = 0; i < dropContainer.getContainerSize(); ++ i){
+                dropContainer.setItem(i, drops.get(i));
+            }
+
+            Containers.dropContents(level(), getOnPos(), dropContainer);
+
+            level().destroyBlock(targetPos, false);
 
             oldBlockState = block.getStateForAge(0);
             level().setBlock(targetPos, oldBlockState, 0);
@@ -429,7 +473,27 @@ public class RobotEntity extends Animal{
             }
             
             for(BlockPos log: targetTree){
+                BlockState oldBlockState = level().getBlockState(log);
+
+                LootParams.Builder lootparams = new LootParams.Builder((ServerLevel)level()).withParameter(LootContextParams.ORIGIN, Vec3.atCenterOf(log)).withParameter(LootContextParams.TOOL, ItemStack.EMPTY);
+                List<ItemStack> drops = oldBlockState.getDrops(lootparams);
+
+                for(int y = 0; y < drops.size(); ++y){
+                    for(int i = 1; i < inventory.getSlots(); ++ i){
+                        drops.set(y, inventory.insertItem(i, drops.get(y), false));
+                    }
+                }
+                
+                SimpleContainer dropContainer = new SimpleContainer(drops.size());
+                for (int i = 0; i < dropContainer.getContainerSize(); ++ i){
+                    dropContainer.setItem(i, drops.get(i));
+                }
+
+                Containers.dropContents(level(), getOnPos(), dropContainer);
+
+
                 level().destroyBlock(log, false);
+
                 targetTree = null;
             }
 
@@ -447,7 +511,7 @@ public class RobotEntity extends Animal{
         List<BlockPos> logs = new ArrayList<BlockPos>();
 
         List<List<BlockPos>> trees = new ArrayList<List<BlockPos>>();
-        
+
         for(int y = start.getY(); y < end.getY(); ++ y){
             for(int x = start.getX(); x < end.getX(); ++ x){
                 for(int z = start.getZ(); z < end.getZ(); ++ z){
@@ -548,10 +612,13 @@ public class RobotEntity extends Animal{
     }
 
     public void dropContents() {
-        SimpleContainer drops = new SimpleContainer(inventory.getSlots());
-        for (int i = 0; i < drops.getContainerSize(); ++ i){
+        SimpleContainer drops = new SimpleContainer(inventory.getSlots()+1);
+        for (int i = 0; i < drops.getContainerSize()-1; ++ i){
             drops.setItem(i, inventory.getStackInSlot(i));
         }
+
+        ItemStack robotItem = new ItemStack(dropItem,1);
+        drops.setItem(drops.getContainerSize()-1, robotItem);
 
         Containers.dropContents(level(), getOnPos(), drops);
     }
