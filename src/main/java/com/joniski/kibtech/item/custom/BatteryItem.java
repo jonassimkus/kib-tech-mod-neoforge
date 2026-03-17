@@ -82,6 +82,17 @@ public class BatteryItem extends Item {
         return amount - excess;
     }
 
+    public int getPower(ItemStack stack){
+        PowerRecord power = stack.get(ModDataComponents.POWER_COMPONENT);
+        int powerCurrent = 0;
+
+        if (power != null){
+            powerCurrent = power.power();
+        }
+
+        return powerCurrent;
+    }
+
     public int getMaxPower(){
         return maxPower;
     }

@@ -26,7 +26,9 @@ public class ModItems {
         public static final DeferredItem<Item> NETHERITE_ROBOT_ITEM = ITEMS.register("netherite_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.NETHERITE_ROBOT.get()));
         public static final DeferredItem<Item> IRON_ROBOT_ITEM = ITEMS.register("iron_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.IRON_ROBOT.get()));
         public static final DeferredItem<Item> DIAMOND_ROBOT_ITEM = ITEMS.register("diamond_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.DIAMOND_ROBOT.get()));
-        public static final DeferredItem<Item> CHIP_ITEM = ITEMS.register("chip_item", () -> new Item(new Item.Properties().stacksTo(1)));
+        public static final DeferredItem<Item> CHIP_ITEM = ITEMS.register("chip_item", () -> new Item(new Item.Properties().stacksTo(64)));
+        public static final DeferredItem<Item> PLASTIC_ITEM = ITEMS.register("plastic_item", () -> new Item(new Item.Properties().stacksTo(64)));
+        public static final DeferredItem<Item> ADVANCED_CHIP_ITEM = ITEMS.register("advanced_chip_item", () -> new Item(new Item.Properties().stacksTo(64)));
         public static final DeferredItem<Item> ROBOT_WAND_ITEM = ITEMS.register("robot_wand_item", () -> new RobotWandItem(new Item.Properties().stacksTo(1)));
 
         public static void register(IEventBus modEventBus){

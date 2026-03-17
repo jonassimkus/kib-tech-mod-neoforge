@@ -1,0 +1,30 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "I": {
+            "item": "minecraft:gold_ingot"
+        },
+        "L": {
+            "item": "minecraft:iron_block"
+        },
+        "c": {
+            "item": "kibtech:chip_item"
+        },
+        "P" : {
+            "item" : "kibtech:plastic_item"
+        },
+        "R" : {
+            "item": "minecraft:redstone_block"
+        }
+    },
+    "pattern": [
+        "IPI",
+        "LcL",
+        "RIR"
+    ],
+    "result": {
+        "count": 1,
+        "id": "kibtech:iron_robot_item"
+    }
+}

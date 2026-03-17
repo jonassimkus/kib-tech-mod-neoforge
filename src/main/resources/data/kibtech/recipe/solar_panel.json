@@ -1,0 +1,27 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "C": {
+            "item": "kibtech:chip_item"
+        },
+        "c": {
+            "item": "minecraft:copper_ingot"
+        },
+        "g": {
+            "item": "minecraft:gold_ingot"
+        },
+        "s": {
+            "item": "minecraft:stone"
+        }
+    },
+    "pattern": [
+        "cgc",
+        " C ",
+        "sss"
+    ],
+    "result": {
+        "count": 1,
+        "id": "kibtech:solar_panel"
+    }
+}

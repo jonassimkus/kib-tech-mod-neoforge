@@ -48,6 +48,8 @@ public class KibTech {
             output.accept(ModItems.IRON_ROBOT_ITEM.get());
             output.accept(ModItems.DIAMOND_ROBOT_ITEM.get());
             output.accept(ModItems.CHIP_ITEM.get());
+            output.accept(ModItems.PLASTIC_ITEM.get());
+            output.accept(ModItems.ADVANCED_CHIP_ITEM.get());
             output.accept(ModItems.ROBOT_WAND_ITEM.get());
             output.accept(ModBlocks.SOLAR_PANEL.get());
             output.accept(ModBlocks.BATTERY_CHARGER.get());
@@ -59,6 +61,7 @@ public class KibTech {
     public KibTech(IEventBus modEventBus, ModContainer modContainer) {
         modEventBus.addListener(this::commonSetup);
 
+        // TODO: make auto datagen for this stuff
         ModBlocks.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlockEntity.register(modEventBus);

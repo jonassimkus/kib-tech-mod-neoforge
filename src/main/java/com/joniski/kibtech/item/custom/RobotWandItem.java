@@ -22,6 +22,7 @@ import net.minecraft.world.phys.BlockHitResult;
 
 public class RobotWandItem extends Item{
 
+    // TODO: put this stuff in a record so all items dont have the same things.
     public RobotEntity setRobot = null;
     private BlockPos startPos = null;
     private BlockPos endPos = null;

@@ -50,6 +50,7 @@ public class ModBlocks {
         return toReturn;
     }
 
+    // TODO: make crafting recipes for all this
     public static void register(IEventBus modEventBus){
         BLOCKS.register(modEventBus);
 

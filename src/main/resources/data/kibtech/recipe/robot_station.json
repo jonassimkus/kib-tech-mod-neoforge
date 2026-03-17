@@ -1,0 +1,30 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "category": "misc",
+    "key": {
+        "C": {
+            "item": "kibtech:chip_item"
+        },
+        "P": {
+            "item": "kibtech:plastic_item"
+        },
+        "R": {
+            "item": "minecraft:redstone_block"
+        },
+        "B":{
+            "item": "kibtech:weak_battery"
+        },
+        "c": {
+            "item": "minecraft:chest"
+        }
+    },
+    "pattern": [
+        "PPP",
+        "BCB",
+        "RcR"
+    ],
+    "result": {
+        "count": 1,
+        "id": "kibtech:robot_station"
+    }
+}

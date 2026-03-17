@@ -56,7 +56,7 @@ public class ModNetworking {
         );
     }
 
-    // MOVE TO ANOTHER CLASS 
+    // TODO: MOVE TO ANOTHER CLASS 
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event){
         event.put(ModEntities.COPPER_ROBOT.get(), RobotEntity.createAttributes().build());

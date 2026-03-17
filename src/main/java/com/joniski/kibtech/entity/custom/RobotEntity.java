@@ -105,10 +105,12 @@ public class RobotEntity extends Animal{
     private BlockPos station;
     private List<BlockPos> targetTree;
     public Item dropItem = ModItems.COPPER_ROBOT_ITEM.asItem();
+
     public boolean goStation = false;
-    public boolean charging = false;
-    public int maxArea = 5;
+    public boolean charging = false; // < will make these not needed with state machine or atleast enum of some kinds.
     private boolean moving = false;
+
+    public int maxArea = 5;
     private RobotWorkType workType = RobotWorkType.NONE;
 
    // Slot 1: Battery; Slot 2: Tool
@@ -374,6 +376,7 @@ public class RobotEntity extends Animal{
         return level().getPlayerByUUID(followEntityUUID);
     }
 
+    // TODO: CHANGE TO STATE MACHINE
     public void work(){
         ItemStack battStack = inventory.getStackInSlot(0);
         if (!(battStack.getItem() instanceof BatteryItem battery)){
@@ -575,6 +578,11 @@ public class RobotEntity extends Animal{
             return;
         }
 
+        if (getNavigation().getTargetPos() == null){
+            stopMoving();
+            return;
+        }
+
         if (getNavigation().isDone()){
             BlockPos targetPos = getNavigation().getTargetPos();
             BlockState oldBlockState = level().getBlockState(targetPos);
@@ -639,6 +647,11 @@ public class RobotEntity extends Animal{
 
         if (getNavigation().isStuck()){
             moving = false;
+            return;
+        }
+
+        if (getNavigation().getTargetPos() == null){
+            stopMoving();
             return;
         }
 

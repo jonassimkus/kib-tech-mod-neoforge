@@ -10,6 +10,7 @@ import com.joniski.kibtech.block.custom.SolarPanelEntity;
 import com.joniski.kibtech.entity.custom.DiamondRobotEntity;
 import com.joniski.kibtech.entity.custom.IronRobotEntity;
 import com.joniski.kibtech.entity.custom.NetheriteRobotEntity;
+import com.joniski.kibtech.item.custom.BatteryItem;
 import com.joniski.kibtech.packets.RobotFollowerPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 
@@ -92,6 +93,25 @@ public class RobotScreen extends AbstractContainerScreen<RobotMenu>{
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
         guiGraphics.drawString(this.font, this.title, this.titleLabelX, this.titleLabelY + 2, 4210752, false);
         guiGraphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.inventoryLabelY + 2, 4210752, false);
+
+        if (currentMenu == "settings"){
+            ItemStack batteryStack = menu.entity.inventory.getStackInSlot(0);
+            if (batteryStack != null && batteryStack.getItem() instanceof BatteryItem batteryItem){
+                int color;
+                float percentage = ((float)batteryItem.getPower(batteryStack) / (float)batteryItem.getMaxPower()) * 100;
+                if (percentage > 50){
+                    color = 0xA1FF52;
+                }else if (percentage > 10){
+                    color = 0xFFA530;
+                }else{
+                    color = 0xAD0000;
+                }
+
+                guiGraphics.drawString(font, batteryItem.getPower(batteryStack) + "/" + batteryItem.getMaxPower() + " KE", 8, 40, color);
+            }else{
+                guiGraphics.drawString(font, "0%", 8, 40, 0xAD0000);
+            }
+        }
     }
 
     @Override
