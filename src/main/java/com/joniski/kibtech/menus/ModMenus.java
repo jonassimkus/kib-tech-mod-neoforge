@@ -3,6 +3,7 @@ package com.joniski.kibtech.menus;
 import java.util.function.Supplier;
 
 import com.joniski.kibtech.KibTech;
+import com.joniski.kibtech.menus.custom.AdvancedSolarPanelMenu;
 import com.joniski.kibtech.menus.custom.BatteryChargerMenu;
 import com.joniski.kibtech.menus.custom.RobotMenu;
 import com.joniski.kibtech.menus.custom.RobotStationMenu;
@@ -25,6 +26,9 @@ public class ModMenus {
 
     public static final DeferredHolder<MenuType<?>, MenuType<SolarPanelMenu>> SOLAR_PANEL_MENU =
             registerMenuType("solar_panel_menu", SolarPanelMenu::new);
+
+    public static final DeferredHolder<MenuType<?>, MenuType<AdvancedSolarPanelMenu>> ADVANCED_SOLAR_PANEL_MENU =
+            registerMenuType("advanced_solar_panel_menu", AdvancedSolarPanelMenu::new);
 
 
     public static final DeferredHolder<MenuType<?>, MenuType<BatteryChargerMenu>> BATTERY_CHARGER_MENU =

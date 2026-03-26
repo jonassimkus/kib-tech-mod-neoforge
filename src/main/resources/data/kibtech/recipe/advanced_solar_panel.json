@@ -5,20 +5,23 @@
         "C": {
             "item": "kibtech:advanced_chip_item"
         },
-        "P": {
-            "item": "kibtech:plastic_item"
+        "c": {
+            "item": "minecraft:gold_ingot"
         },
-        "D": {
-            "item": "minecraft:iron_ingot"
+        "g": {
+            "item": "minecraft:diamond"
+        },
+        "s": {
+            "item": "minecraft:stone"
         }
     },
     "pattern": [
-        "  D",
+        "cgc",
         " C ",
-        "P  "
+        "sss"
     ],
     "result": {
         "count": 1,
-        "id": "kibtech:strong_battery"
+        "id": "kibtech:advanced_solar_panel"
     }
 }

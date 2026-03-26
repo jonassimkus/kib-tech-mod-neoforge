@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import com.joniski.kibtech.KibTech;
 import com.joniski.kibtech.block.ModBlockEntity;
+import com.joniski.kibtech.menus.custom.AdvancedSolarPanelMenu;
 import com.joniski.kibtech.menus.custom.RobotMenu;
 import com.joniski.kibtech.menus.custom.SolarPanelMenu;
 
@@ -33,17 +34,17 @@ import net.neoforged.neoforge.energy.IEnergyStorage;
 import net.neoforged.neoforge.items.ItemStackHandler;
 
 @EventBusSubscriber(modid =  KibTech.MODID)
-public class SolarPanelEntity extends BlockEntity implements MenuProvider{
+public class AdvancedSolarPanelEntity extends BlockEntity implements MenuProvider{
 
     private EnergyStorage energyStorage;
     private IEnergyStorage downwardInterface;
-    public int generationPerTick = 11;
+    public int generationPerTick = 30;
     public int generatedThisTick = 0;
 
-    public SolarPanelEntity(BlockPos pos, BlockState blockState) {
-        super(ModBlockEntity.SOLAR_PANEL_BE.get(), pos, blockState);
+    public AdvancedSolarPanelEntity(BlockPos pos, BlockState blockState) {
+        super(ModBlockEntity.ADVANCED_SOLAR_PANEL_BE.get(), pos, blockState);
 
-        energyStorage = new EnergyStorage(4400);
+        energyStorage = new EnergyStorage(12500);
         // Make sure that the solar panel can only give power from the bottom interface, and they cant recieve any.
         downwardInterface = new IEnergyStorage() {
 
@@ -83,36 +84,36 @@ public class SolarPanelEntity extends BlockEntity implements MenuProvider{
     @Override
     protected void saveAdditional(CompoundTag tag, Provider registries) {
         super.saveAdditional(tag, registries);
-        tag.put("solar_panel.storage", energyStorage.serializeNBT(registries));
+        tag.put("advanced_solar_panel.storage", energyStorage.serializeNBT(registries));
 
         // Need to store this for it to appear in the gui container and to sync it with client.
-        tag.putInt("solar_panel.thistick", generatedThisTick);
+        tag.putInt("advanced_solar_panel.thistick", generatedThisTick);
     }
 
     @Override
     protected void loadAdditional(CompoundTag tag, Provider registries) {
         super.loadAdditional(tag, registries);
-        if (tag.get("solar_panel.storage") != null){
-            energyStorage.deserializeNBT(registries, tag.get("solar_panel.storage"));
+        if (tag.get("advanced_solar_panel.storage") != null){
+            energyStorage.deserializeNBT(registries, tag.get("advanced_solar_panel.storage"));
         }
 
-        if (tag.get("solar_panel.thistick") != null){
-            generatedThisTick = tag.getInt("solar_panel.thistick");
+        if (tag.get("advanced_solar_panel.thistick") != null){
+            generatedThisTick = tag.getInt("advanced_solar_panel.thistick");
         }
     }
 
     @Override
     public AbstractContainerMenu createMenu(int arg0, Inventory arg1, Player arg2) {
-        return new SolarPanelMenu(arg0, arg1, this);
+        return new AdvancedSolarPanelMenu(arg0, arg1, this);
     }
 
     @Override
     public Component getDisplayName() {
-        return Component.translatable("block.kibtech.solar_panel");
+        return Component.translatable("block.kibtech.advanced_solar_panel");
     }
 
 
-    public static IEnergyStorage getCapabilities(SolarPanelEntity solarPanelEntity, Direction direction){
+    public static IEnergyStorage getCapabilities(AdvancedSolarPanelEntity solarPanelEntity, Direction direction){
         // Cool stuff lets this mod work with other electricity mods :)
         if (direction == Direction.DOWN){
             return solarPanelEntity.downwardInterface;
@@ -143,7 +144,7 @@ public class SolarPanelEntity extends BlockEntity implements MenuProvider{
 
     @SubscribeEvent
     public static void onCapabilitiesRegister(final RegisterCapabilitiesEvent event){
-        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntity.SOLAR_PANEL_BE.get(), SolarPanelEntity::getCapabilities);
+        event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntity.ADVANCED_SOLAR_PANEL_BE.get(), AdvancedSolarPanelEntity::getCapabilities);
     }
     
 

@@ -1,10 +1,12 @@
 {
   "itemGroup.kibtech.kibtech": "Kib Tech",
   "block.kibtech.solar_panel": "Solar Panel",
+  "block.kibtech.advanced_solar_panel": "Advanced Solar Panel",
   "block.kibtech.battery_charger": "Battery Charger",
   "block.kibtech.robot_station": "Robot Station",
 
   "item.kibtech.weak_battery": "Weak Battery",
+  "item.kibtech.moderate_battery": "Moderate Battery",
   "item.kibtech.strong_battery": "Strong Battery",
   "item.kibtech.copper_robot_item": "Copper Robot",
   "item.kibtech.netherite_robot_item": "Netherite Robot",

@@ -3,6 +3,7 @@ package com.joniski.kibtech.block;
 import java.util.function.Supplier;
 
 import com.joniski.kibtech.KibTech;
+import com.joniski.kibtech.block.custom.AdvancedSolarPanelEntity;
 import com.joniski.kibtech.block.custom.BatteryChargerEntity;
 import com.joniski.kibtech.block.custom.RobotStationEntity;
 import com.joniski.kibtech.block.custom.SolarPanelEntity;
@@ -26,6 +27,11 @@ public class ModBlockEntity {
             SolarPanelEntity::new,
             ModBlocks.SOLAR_PANEL.get()).build(null));
     
+    public static final Supplier<BlockEntityType<AdvancedSolarPanelEntity>> ADVANCED_SOLAR_PANEL_BE =
+         BLOCK_ENTITIES.register("advanced_solar_panel_be", () -> BlockEntityType.Builder.of(
+            AdvancedSolarPanelEntity::new,
+            ModBlocks.ADVANCED_SOLAR_PANEL.get()).build(null));
+
     public static final Supplier<BlockEntityType<RobotStationEntity>> ROBOT_STATION_BE =
          BLOCK_ENTITIES.register("robot_station_be", () -> BlockEntityType.Builder.of(
             RobotStationEntity::new,

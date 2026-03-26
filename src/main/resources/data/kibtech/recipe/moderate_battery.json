@@ -3,7 +3,7 @@
     "category": "misc",
     "key": {
         "C": {
-            "item": "kibtech:advanced_chip_item"
+            "item": "kibtech:chip_item"
         },
         "P": {
             "item": "kibtech:plastic_item"
@@ -19,6 +19,6 @@
     ],
     "result": {
         "count": 1,
-        "id": "kibtech:strong_battery"
+        "id": "kibtech:moderate_battery"
     }
 }

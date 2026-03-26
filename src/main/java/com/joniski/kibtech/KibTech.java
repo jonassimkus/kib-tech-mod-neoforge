@@ -42,6 +42,7 @@ public class KibTech {
         .icon(() -> new ItemStack(ModItems.WEAK_BATTERY.get()))
         .displayItems((params, output) ->{
             output.accept(ModItems.WEAK_BATTERY.get());
+            output.accept(ModItems.MODERATE_BATTERY.get());
             output.accept(ModItems.STRONG_BATTERY.get());
             output.accept(ModItems.COPPER_ROBOT_ITEM.get());
             output.accept(ModItems.NETHERITE_ROBOT_ITEM.get());
@@ -52,6 +53,7 @@ public class KibTech {
             output.accept(ModItems.ADVANCED_CHIP_ITEM.get());
             output.accept(ModItems.ROBOT_WAND_ITEM.get());
             output.accept(ModBlocks.SOLAR_PANEL.get());
+            output.accept(ModBlocks.ADVANCED_SOLAR_PANEL.get());
             output.accept(ModBlocks.BATTERY_CHARGER.get());
             output.accept(ModBlocks.ROBOT_STATION.get());
         })

@@ -1,0 +1,68 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "minecraft:block/cube",
+	"ambientocclusion": false,
+	"texture_size": [32, 32],
+	"textures": {
+		"0": "kibtech:block/advanced_solar_panel",
+		"1": "kibtech:block/stem",
+		"2": "kibtech:block/bottom",
+		"particle": "kibtech:block/advanced_solar_panel"
+	},
+	"elements": [
+		{
+			"from": [5.25, 1, 7.25],
+			"to": [6.75, 7.1, 8.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 1, 12]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 7], "texture": "#1"},
+				"east": {"uv": [2, 0, 4, 7], "texture": "#1"},
+				"south": {"uv": [4, 0, 6, 7], "texture": "#1"},
+				"west": {"uv": [6, 0, 8, 7], "texture": "#1"},
+				"up": {"uv": [0.75, 7.75, 0, 7], "texture": "#1"},
+				"down": {"uv": [4, 7, 2, 9], "texture": "#1"}
+			}
+		},
+		{
+			"from": [9.25, 1, 7.25],
+			"to": [10.75, 7.1, 8.75],
+			"rotation": {"angle": 0, "axis": "y", "origin": [4, 1, 12]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 7], "texture": "#1"},
+				"east": {"uv": [2, 0, 4, 7], "texture": "#1"},
+				"south": {"uv": [4, 0, 6, 7], "texture": "#1"},
+				"west": {"uv": [6, 0, 8, 7], "texture": "#1"},
+				"up": {"uv": [0.75, 7.75, 0, 7], "texture": "#1"},
+				"down": {"uv": [4, 7, 2, 9], "texture": "#1"}
+			}
+		},
+		{
+			"from": [0, 7, 0],
+			"to": [16, 8, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [5, 8, 14]},
+			"faces": {
+				"north": {"uv": [8.25, 0, 16, 0.5], "texture": "#0"},
+				"east": {"uv": [8.25, 0.5, 16, 1], "texture": "#0"},
+				"south": {"uv": [8.25, 1, 16, 1.5], "texture": "#0"},
+				"west": {"uv": [8.25, 1.5, 16, 2], "texture": "#0"},
+				"up": {"uv": [8, 8, 0, 0], "texture": "#0"},
+				"down": {"uv": [8, 8, 0, 16], "texture": "#0"}
+			}
+		},
+		{
+			"from": [3, 0, 3],
+			"to": [13, 1, 13],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 0, 12]},
+			"faces": {
+				"north": {"uv": [5, 0, 10, 0.5], "texture": "#2"},
+				"east": {"uv": [5, 0.5, 10, 1], "texture": "#2"},
+				"south": {"uv": [5, 1, 10, 1.5], "texture": "#2"},
+				"west": {"uv": [5, 1.5, 10, 2], "texture": "#2"},
+				"up": {"uv": [5, 5, 0, 0], "texture": "#2"},
+				"down": {"uv": [5, 5, 0, 10], "texture": "#2"}
+			}
+		}
+	]
+}
+

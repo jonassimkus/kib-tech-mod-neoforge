@@ -13,6 +13,7 @@ import com.joniski.kibtech.entity.custom.DiamondRobotEntity;
 import com.joniski.kibtech.entity.custom.RobotEntity;
 import com.joniski.kibtech.item.ModItems;
 import com.joniski.kibtech.menus.ModMenus;
+import com.joniski.kibtech.menus.custom.AdvancedSolarPanelScreen;
 import com.joniski.kibtech.menus.custom.BatteryChargerScreen;
 import com.joniski.kibtech.menus.custom.RobotScreen;
 import com.joniski.kibtech.menus.custom.RobotStationScreen;
@@ -60,6 +61,7 @@ public class KibTechClient {
     @SubscribeEvent
     public static void registerScreens(RegisterMenuScreensEvent event){
         event.register(ModMenus.SOLAR_PANEL_MENU.get(), SolarPanelScreen::new);
+        event.register(ModMenus.ADVANCED_SOLAR_PANEL_MENU.get(), AdvancedSolarPanelScreen::new);
         event.register(ModMenus.BATTERY_CHARGER_MENU.get(), BatteryChargerScreen::new);
         event.register(ModMenus.ROBOT_MENU.get(), RobotScreen::new);
         event.register(ModMenus.ROBOT_STATION_MENU.get(), RobotStationScreen::new);

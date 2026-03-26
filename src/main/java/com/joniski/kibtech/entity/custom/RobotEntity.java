@@ -375,8 +375,6 @@ public class RobotEntity extends Animal{
         }
 
 
-        KibTech.LOGGER.debug(state.toString());
-
         if (state != RobotStates.FOLLOWING){
             if (getFollowEntity() != null){
                 state = RobotStates.FOLLOWING;

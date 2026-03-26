@@ -21,7 +21,8 @@ public class ModItems {
         public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(KibTech.MODID);
 
         public static final DeferredItem<Item> WEAK_BATTERY = ITEMS.register("weak_battery", () -> new BatteryItem(new Item.Properties().stacksTo(1), 3250));
-        public static final DeferredItem<Item> STRONG_BATTERY = ITEMS.register("strong_battery", () -> new BatteryItem(new Item.Properties().stacksTo(1), 55500));
+        public static final DeferredItem<Item> MODERATE_BATTERY = ITEMS.register("moderate_battery", () -> new BatteryItem(new Item.Properties().stacksTo(1), 12500));
+        public static final DeferredItem<Item> STRONG_BATTERY = ITEMS.register("strong_battery", () -> new BatteryItem(new Item.Properties().stacksTo(1), 57500));
         public static final DeferredItem<Item> COPPER_ROBOT_ITEM = ITEMS.register("copper_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.COPPER_ROBOT.get()));
         public static final DeferredItem<Item> NETHERITE_ROBOT_ITEM = ITEMS.register("netherite_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.NETHERITE_ROBOT.get()));
         public static final DeferredItem<Item> IRON_ROBOT_ITEM = ITEMS.register("iron_robot_item", () -> new RobotItem(new Item.Properties().stacksTo(1), ModEntities.IRON_ROBOT.get()));

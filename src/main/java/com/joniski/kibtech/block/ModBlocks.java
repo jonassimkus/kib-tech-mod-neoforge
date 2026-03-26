@@ -3,6 +3,7 @@ package com.joniski.kibtech.block;
 import java.util.function.Supplier;
 
 import com.joniski.kibtech.KibTech;
+import com.joniski.kibtech.block.custom.AdvancedSolarPanel;
 import com.joniski.kibtech.block.custom.BatteryCharger;
 import com.joniski.kibtech.block.custom.RobotStation;
 import com.joniski.kibtech.block.custom.SolarPanel;
@@ -22,6 +23,14 @@ public class ModBlocks {
 
     public static final DeferredBlock<Block> SOLAR_PANEL = registerBlock("solar_panel",
      () -> new SolarPanel(BlockBehaviour.Properties.of()
+        .strength(2f)
+        .requiresCorrectToolForDrops()
+        .sound(SoundType.STONE)
+        .noOcclusion()
+    ));
+
+    public static final DeferredBlock<Block> ADVANCED_SOLAR_PANEL = registerBlock("advanced_solar_panel",
+     () -> new AdvancedSolarPanel(BlockBehaviour.Properties.of()
         .strength(2f)
         .requiresCorrectToolForDrops()
         .sound(SoundType.STONE)
