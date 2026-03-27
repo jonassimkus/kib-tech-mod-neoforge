@@ -59,8 +59,10 @@ public class BatteryItem extends Item {
             return false;
         }
 
-        return power.power() >= maxPower;
+        // Return true if almost full
+        return power.power() >= maxPower-5;
     }
+
 
     public int charge(ItemStack stack, int amount){
         PowerRecord power = stack.get(ModDataComponents.POWER_COMPONENT);

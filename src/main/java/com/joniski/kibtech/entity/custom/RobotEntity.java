@@ -452,7 +452,14 @@ public class RobotEntity extends Animal{
                     boolean isStationFull = stationEntity.isInventoryFull();
                     boolean isRobotFull = isInventoryFull();
 
-                    if (isRobotFull && !isStationFull){
+                    if (isRobotFull && !isStationFull && stationEntity.getEnergyStorage().getEnergyStored() > 100){
+                        BlockPos clearBlock = getNearestClearBlock(level(), getStation(), blockPosition());
+                        getNavigation().moveTo(clearBlock.getX(), clearBlock.getY(), clearBlock.getZ(), moveSpeed);
+                        targetBlock = getStation();
+                        state = RobotStates.MOVING;
+                    }
+
+                    if (battery.getPower(battStack) < battery.getMaxPower() / 10){
                         BlockPos clearBlock = getNearestClearBlock(level(), getStation(), blockPosition());
                         getNavigation().moveTo(clearBlock.getX(), clearBlock.getY(), clearBlock.getZ(), moveSpeed);
                         targetBlock = getStation();
@@ -529,6 +536,14 @@ public class RobotEntity extends Animal{
                         inventory.setStackInSlot(i, robotStationEntity.inventory.insertItem(v, inventory.getStackInSlot(i), false));
                     }
                 }
+
+                if (robotStationEntity.getEnergyStorage().getEnergyStored() > 0 && !(((BatteryItem)battStack.getItem()).isFull(battStack))){
+                    int extractedEnergy = robotStationEntity.getEnergyStorage().extractEnergy(50, true);
+                    int amountTook = ((BatteryItem)battStack.getItem()).charge(battStack, extractedEnergy);
+                    robotStationEntity.getEnergyStorage().extractEnergy(amountTook, false);
+                    break;
+                }
+
                 state = RobotStates.IDLE;
 
                 break;

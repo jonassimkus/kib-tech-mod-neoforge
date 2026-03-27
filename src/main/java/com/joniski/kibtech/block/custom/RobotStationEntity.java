@@ -63,6 +63,7 @@ public class RobotStationEntity extends BlockEntity implements MenuProvider {
 
     private EnergyStorage energyStorage;
     private IEnergyStorage upwardInterface;
+    private IItemHandler storageInterface;
 
     public RobotStationEntity(BlockPos pos, BlockState blockState) {
         super(ModBlockEntity.ROBOT_STATION_BE.get(), pos, blockState);
@@ -99,6 +100,32 @@ public class RobotStationEntity extends BlockEntity implements MenuProvider {
                 return energyStorage.receiveEnergy(arg0, arg1);
             }
             
+        };
+
+        storageInterface = new IItemHandler() {
+            public int getSlots() {
+                return inventory.getSlots();
+            }
+
+            public ItemStack getStackInSlot(int var1) {
+                return inventory.getStackInSlot(var1);
+            }
+
+            public ItemStack insertItem(int var1, ItemStack var2, boolean var3) {
+                return inventory.insertItem(var1, var2, var3);
+            }
+
+            public ItemStack extractItem(int var1, int var2, boolean var3) {
+                return inventory.extractItem(var1, var2, var3);
+            }
+
+            public int getSlotLimit(int var1) {
+                return inventory.getSlotLimit(var1);
+            }
+
+            public boolean isItemValid(int var1, ItemStack var2) {
+                return inventory.isItemValid(var1, var2);
+            }
         };
     }
 
@@ -141,6 +168,15 @@ public class RobotStationEntity extends BlockEntity implements MenuProvider {
     }
 
 
+   public static IItemHandler getStorageCapabilities(RobotStationEntity robotStationEntity, Direction direction){
+        if (direction == Direction.DOWN){
+            return robotStationEntity.storageInterface;
+        }
+
+        return null;
+    }
+
+
     public void tick(Level level, BlockPos pos, BlockState state){
         if (energyStorage.getEnergyStored() <= 0){
             return;
@@ -156,6 +192,7 @@ public class RobotStationEntity extends BlockEntity implements MenuProvider {
     @SubscribeEvent
     public static void onCapabilitiesRegister(final RegisterCapabilitiesEvent event){
         event.registerBlockEntity(Capabilities.EnergyStorage.BLOCK, ModBlockEntity.ROBOT_STATION_BE.get(), RobotStationEntity::getCapabilities);
+        event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, ModBlockEntity.ROBOT_STATION_BE.get(), RobotStationEntity::getStorageCapabilities);
     }
 
 
