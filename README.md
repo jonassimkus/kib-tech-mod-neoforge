@@ -27,7 +27,7 @@ Features
 Download 
 =======
 
-https://modrinth.com/mod/kibs-robots/
+[Modrinth](https://modrinth.com/mod/kibs-robots/)
 
 Dependencies
 =======
